@@ -14,10 +14,10 @@
 # limitations under the License.
 #
 
-$(call inherit-product-if-exists, vendor/htc/heroc/device_heroc-vendor.mk)
+$(call inherit-product-if-exists, vendor/htc/rhodium/device_rhodium-vendor.mk)
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
-LOCAL_KERNEL := device/htc/heroc/prebuilt/kernel
+LOCAL_KERNEL := device/htc/rhodium/prebuilt/kernel
 else
 LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
 endif
@@ -25,7 +25,7 @@ endif
 PRODUCT_COPY_FILES += \
     $(LOCAL_KERNEL):kernel
 
-DEVICE_PACKAGE_OVERLAYS += device/htc/heroc/overlay
+DEVICE_PACKAGE_OVERLAYS += device/htc/rhodium/overlay
 
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.com.google.clientidbase=android-sprint-us \
@@ -37,8 +37,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	dalvik.vm.lockprof.threshold=500
 
 PRODUCT_COPY_FILES += \
-    device/htc/heroc/prebuilt/init.heroc.rc:root/init.heroc.rc \
-    device/htc/heroc/prebuilt/ueventd.heroc.rc:root/ueventd.heroc.rc
+    device/htc/rhodium/prebuilt/init.rhodium.rc:root/init.rhodium.rc \
+    device/htc/rhodium/prebuilt/ueventd.rhodium.rc:root/ueventd.rhodium.rc
 
 # Permissions for HeroC
 PRODUCT_COPY_FILES += \
@@ -60,40 +60,40 @@ PRODUCT_COPY_FILES += \
 
 # Add the Device Configuration files for touchscreen and cursor (trackball) devices
 PRODUCT_COPY_FILES += \
-    device/htc/heroc/prebuilt/synaptics-rmi-touchscreen.idc:system/usr/idc/synaptics-rmi-touchscreen.idc \
-    device/htc/heroc/prebuilt/heroc-nav.idc:system/usr/idc/heroc-nav.idc
+    device/htc/rhodium/prebuilt/synaptics-rmi-touchscreen.idc:system/usr/idc/synaptics-rmi-touchscreen.idc \
+    device/htc/rhodium/prebuilt/rhodium-nav.idc:system/usr/idc/rhodium-nav.idc
 
 # media config xml file
 PRODUCT_COPY_FILES += \
-    device/htc/heroc/prebuilt/media_profiles.xml:system/etc/media_profiles.xml
+    device/htc/rhodium/prebuilt/media_profiles.xml:system/etc/media_profiles.xml
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
-    device/htc/heroc/prebuilt/heroc-keypad.kl:system/usr/keylayout/heroc-keypad.kl \
-    device/htc/heroc/prebuilt/h2w_headset.kl:system/usr/keylayout/h2w_headset.kl
+    device/htc/rhodium/prebuilt/rhodium-keypad.kl:system/usr/keylayout/rhodium-keypad.kl \
+    device/htc/rhodium/prebuilt/h2w_headset.kl:system/usr/keylayout/h2w_headset.kl
 
 PRODUCT_COPY_FILES += \
-    device/htc/heroc/prebuilt/vold.fstab:system/etc/vold.fstab \
-    device/htc/heroc/prebuilt/gps.conf:system/etc/gps.conf \
-    device/htc/heroc/prebuilt/apns-conf.xml:system/etc/apns-conf.xml
+    device/htc/rhodium/prebuilt/vold.fstab:system/etc/vold.fstab \
+    device/htc/rhodium/prebuilt/gps.conf:system/etc/gps.conf \
+    device/htc/rhodium/prebuilt/apns-conf.xml:system/etc/apns-conf.xml
 
 PRODUCT_COPY_FILES += \
-    device/htc/heroc/prebuilt/libcamera.so:obj/lib/libcamera.so \
-    device/htc/heroc/prebuilt/libcamera.so:system/lib/libcamera.so \
-    device/htc/heroc/prebuilt/wlan.ko:system/lib/modules/wlan.ko
+    device/htc/rhodium/prebuilt/libcamera.so:obj/lib/libcamera.so \
+    device/htc/rhodium/prebuilt/libcamera.so:system/lib/libcamera.so \
+    device/htc/rhodium/prebuilt/wlan.ko:system/lib/modules/wlan.ko
 
 
 # Product Packages
 PRODUCT_PACKAGES += \
     librs_jni \
-    sensors.heroc \
-    lights.heroc \
+    sensors.rhodium \
+    lights.rhodium \
     lights.msm7k \
     audio.a2dp.default \
-    audio.primary.heroc \
-    audio_policy.heroc \
-    gralloc.heroc \
-    gps.heroc \
+    audio.primary.rhodium \
+    audio_policy.rhodium \
+    gralloc.rhodium \
+    gps.rhodium \
     camera.msm7k \
     wlan_loader \
     tiwlan.ini \
@@ -111,9 +111,9 @@ ADDITIONAL_DEFAULT_PROPERTIES += \
 PRODUCT_LOCALES += mdpi
 
 # Install HeroC kernel modules
-$(call inherit-product, device/htc/heroc/heroc-modules.mk)
+$(call inherit-product, device/htc/rhodium/rhodium-modules.mk)
 
-PRODUCT_NAME := generic_heroc
-PRODUCT_DEVICE := heroc
+PRODUCT_NAME := generic_rhodium
+PRODUCT_DEVICE := rhodium
 PRODUCT_BRAND := Android
-PRODUCT_MODEL := Android on HeroC
+PRODUCT_MODEL := Android on Rhodium

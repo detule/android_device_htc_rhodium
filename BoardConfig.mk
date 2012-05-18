@@ -25,7 +25,7 @@ USE_CAMERA_STUB := true
 # Fake building with eclair cam
 BOARD_USES_ECLAIR_LIBCAMERA := true
 
--include vendor/htc/heroc/BoardConfigVendor.mk
+-include vendor/htc/rhodium/BoardConfigVendor.mk
 
 TARGET_BOARD_PLATFORM := msm7k
 TARGET_BOARD_PLATFORM_GPU := qcom
@@ -36,16 +36,16 @@ TARGET_FORCE_CPU_UPLOAD := true
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
 
-TARGET_BOOTLOADER_BOARD_NAME := heroc
-TARGET_OTA_ASSERT_DEVICE := heroc
-PRODUCT_BUILD_PROP_OVERRIDES += TARGET_BOOTLOADER_BOARD_NAME=heroc
+TARGET_BOOTLOADER_BOARD_NAME := rhodium
+TARGET_OTA_ASSERT_DEVICE := rhodium
+PRODUCT_BUILD_PROP_OVERRIDES += TARGET_BOOTLOADER_BOARD_NAME=rhodium
 
 # ARMv6-compatible processor rev 5 (v6l)
 TARGET_CPU_ABI := armeabi-v6j
 TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv6j
 
-TARGET_SPECIFIC_HEADER_PATH := device/htc/heroc/include
+TARGET_SPECIFIC_HEADER_PATH := device/htc/rhodium/include
 
 # Wifi related defines
 BOARD_WPA_SUPPLICANT_DRIVER := CUSTOM
@@ -74,10 +74,10 @@ BOARD_VENDOR_QCOM_AMSS_VERSION := 4410
 TARGET_HARDWARE_3D := false
 
 # OpenGL drivers config file path
-BOARD_EGL_CFG := device/htc/heroc/egl.cfg
+BOARD_EGL_CFG := device/htc/rhodium/egl.cfg
 
 BOARD_USE_HTC_LIBSENSORS := true
-BOARD_USE_heroc_LIBSENSORS := true
+BOARD_USE_RHODIUM_LIBSENSORS := true
 
 # use old sensors HAL
 # TARGET_USES_OLD_LIBSENSORS_HAL := true
@@ -120,7 +120,7 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 0x0a5c0000
 BOARD_FLASH_BLOCK_SIZE := 131072
 
 #TARGET_RECOVERY_UI_LIB := librecovery_ui_heroc librecovery_ui_htc
-TARGET_PREBUILT_KERNEL := device/htc/heroc/prebuilt/kernel
+TARGET_PREBUILT_KERNEL := device/htc/rhodium/prebuilt/kernel
 
 # ICS 
 COMMON_GLOBAL_CFLAGS += -DMISSING_EGL_EXTERNAL_IMAGE -DMISSING_EGL_PIXEL_FORMAT_YV12 -DMISSING_GRALLOC_BUFFERS

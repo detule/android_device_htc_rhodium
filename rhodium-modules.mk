@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-MOD_SRC := device/htc/heroc/prebuilt/system/lib/modules
+MOD_SRC := device/htc/rhodium/prebuilt/system/lib/modules
 
 PRODUCT_COPY_FILES += $(shell \
     find $(MOD_SRC) -name '*.ko' \

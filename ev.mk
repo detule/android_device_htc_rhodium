@@ -1,5 +1,5 @@
 # Inherit AOSP device configuration for HeroC.
-$(call inherit-product, device/htc/heroc/full_heroc.mk)
+$(call inherit-product, device/htc/rhodium/full_rhodium.mk)
 
 # Inherit some common evervolv stuff.
 $(call inherit-product, vendor/ev/config/common_full_phone.mk)
@@ -7,10 +7,10 @@ $(call inherit-product, vendor/ev/config/common_full_phone.mk)
 #
 # Setup device specific product configuration.
 #
-PRODUCT_NAME := ev_heroc
+PRODUCT_NAME := ev_rhodium
 PRODUCT_BRAND := sprint
-PRODUCT_DEVICE := heroc
-PRODUCT_MODEL := HERO200
+PRODUCT_DEVICE := rhodium
+PRODUCT_MODEL := RHOD
 PRODUCT_MANUFACTURER := HTC
 PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_NAME=soju BUILD_ID=IML74K BUILD_FINGERPRINT=google/soju/crespo:4.0.3/IML74K/239410:user/release-keys PRIVATE_BUILD_DESC="soju-user 4.0.3 IML74K 239410 release-keys" BUILD_NUMBER=239410
 

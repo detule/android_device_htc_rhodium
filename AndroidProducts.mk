@@ -26,4 +26,4 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/heroc.mk
+    $(LOCAL_DIR)/rhodium.mk

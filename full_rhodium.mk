@@ -18,9 +18,9 @@
 # Inherit products
 #
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
-$(call inherit-product, device/htc/heroc/heroc.mk)
+$(call inherit-product, device/htc/rhodium/rhodium.mk)
 
-PRODUCT_NAME := generic_heroc
-PRODUCT_DEVICE := heroc
+PRODUCT_NAME := generic_rhodium
+PRODUCT_DEVICE := rhodium
 PRODUCT_BRAND := Android
 PRODUCT_MODEL := Full Android on HeroC

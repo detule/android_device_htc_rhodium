@@ -20,7 +20,7 @@ $(call add-radio-file,recovery/images/bitmap_size.txt)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE_TAGS := eng
-LOCAL_SRC_FILES := heroc-keypad.kcm
+LOCAL_SRC_FILES := rhodium-keypad.kcm
 include $(BUILD_KEY_CHAR_MAP)
         
--include vendor/htc/heroc/AndroidBoardVendor.mk#
+-include vendor/htc/rhodium/AndroidBoardVendor.mk#
