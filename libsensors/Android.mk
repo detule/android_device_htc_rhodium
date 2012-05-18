@@ -14,13 +14,13 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifeq ($(TARGET_BOOTLOADER_BOARD_NAME),heroc)
+ifeq ($(TARGET_BOOTLOADER_BOARD_NAME),rhodium)
 
 # HAL module implemenation, not prelinked, and stored in
 # hw/<SENSORS_HARDWARE_MODULE_ID>.<ro.product.board>.so
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := sensors.heroc
+LOCAL_MODULE := sensors.rhodium
 
 LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
 
