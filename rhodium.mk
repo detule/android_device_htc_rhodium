@@ -61,6 +61,7 @@ PRODUCT_COPY_FILES += \
 # Add the Device Configuration files for touchscreen and cursor (trackball) devices
 PRODUCT_COPY_FILES += \
     device/htc/rhodium/prebuilt/synaptics-rmi-touchscreen.idc:system/usr/idc/synaptics-rmi-touchscreen.idc \
+    device/htc/rhodium/prebuilt/tssc-manager.idc:system/usr/idc/tssc-manager.idc \
     device/htc/rhodium/prebuilt/rhodium-nav.idc:system/usr/idc/rhodium-nav.idc
 
 # media config xml file
