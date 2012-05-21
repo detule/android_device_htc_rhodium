@@ -1650,7 +1650,7 @@ static int set_initial_audio_volume(void)
 static int get_master_volume(void) 
 {
     float volume;
-    AudioSystem::getMasterVolume(&volume);
+    android::AudioSystem::getMasterVolume(&volume);
     volume = ceil(volume * 5.0);
     return volume;
 }
