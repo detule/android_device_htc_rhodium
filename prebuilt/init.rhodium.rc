@@ -26,6 +26,63 @@ on fs
     # for backwards compatibility
     symlink /mnt/sdcard /sdcard
 
+    #Xdandroid permissions
+    chmod 0777 /dev/smd0
+    chmod 0777 /dev/smd1
+    chmod 0777 /dev/smd7
+    chmod 0777 /dev/smd27
+    chmod 0777 /dev/vfe
+    chmod 0777 /dev/camera
+    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
+    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
+    chmod 0660                /sys/class/rfkill/rfkill0/state
+    chown bluetooth bluetooth /dev/ttyMSM0
+    chmod 0666                /dev/ttyHS1
+    chown root radio /proc/cmdline
+    chmod 666 /proc/cmdline
+    chmod 666 /dev/input/event0
+    chmod 666 /dev/input/event1
+    chmod 666 /dev/input/event2
+    chmod 666 /dev/input/event3
+    chmod 666 /dev/input/event4
+    chmod 666 /dev/input/event5
+    chmod 666 /dev/input/event6
+    chmod 666 /sys/devices/virtual/input/input1/mode
+    chmod 666 /sys/devices/virtual/input/input1/delay
+    chmod 666 /sys/devices/virtual/input/input2/mode
+    chmod 666 /sys/devices/virtual/input/input2/delay
+    chmod 666 /sys/devices/virtual/input/input3/mode
+    chmod 666 /sys/devices/virtual/input/input3/delay
+    chmod 666 /sys/devices/virtual/input/input4/mode
+    chmod 666 /sys/devices/virtual/input/input4/delay
+    chmod 666 /sys/devices/virtual/input/input5/mode
+    chmod 666 /sys/devices/virtual/input/input5/delay
+    chmod 666 /sys/devices/virtual/input/input6/mode
+    chmod 666 /sys/devices/virtual/input/input6/delay
+    chmod 666 /sys/class/i2c-adapter/i2c-0/0-0018/enable
+    chmod 666 /sys/class/i2c-adapter/i2c-0/0-0019/enable
+    chmod 666 /sys/class/i2c-adapter/i2c-0/0-0018/rate
+    chmod 666 /sys/class/i2c-adapter/i2c-0/0-0019/rate
+    chmod 666 /sys/class/i2c-adapter/i2c-0/0-0018/scale
+    chmod 666 /sys/class/i2c-adapter/i2c-0/0-0019/scale
+    chmod 666 /dev/uinput
+    chmod 666 /etc/bluez/audio.conf
+    chmod 666 /etc/bluez/hcid.conf
+    chmod 666 /etc/bluez/input.conf
+    chmod 666 /dev/msm_snd
+    chmod 666 /dev/msm_pcm_in
+    chmod 666 /dev/msm_audpre
+    chmod 666 /dev/msm_mp3
+    chmod 666 /dev/msm_pcm_out
+    chmod 666 /dev/msm_pcm_ctl
+    chmod 666 /dev/msm_hw3dm
+    chmod 666 /dev/msm_hw3dc
+    chmod 666 /dev/htc_acoustic_wince
+    chmod 666 /dev/tpa2016d2
+    chmod 666 /dev/audience_A1010
+    chmod 666 /dev/cm3602
+
+    write /sys/devices/virtual/vtconsole/vtcon1/bind 0
     # bluetooth power up/down interface
     chown bluetooth bluetooth /dev/ttyHS0
     chmod 0600 /dev/ttyHS0
