@@ -21,7 +21,7 @@
 #include <media/mediarecorder.h>
 #include <fcntl.h>
 
-namespace android {
+namespace android_audio_legacy {
 
 
 
