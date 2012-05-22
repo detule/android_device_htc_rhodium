@@ -51,8 +51,7 @@
 
 #define PPP_SYS_PATH "/sys/class/net/ppp0/operstate"
 
-#define PPP_SERVICE	"pppd_gprs"
-#define PPP_KILL()	property_set("ctl.stop", PPP_SERVICE)
+#define PPP_KILL()	property_set("ril.pppd_runner.data_ready", "false")
 
 #ifdef USE_TI_COMMANDS
 
@@ -105,8 +104,8 @@ static void onCancel (RIL_Token t);
 static const char *getVersion();
 static int isRadioOn();
 static SIM_Status getSIMStatus();
-static int getCardStatus(RIL_CardStatus **pp_card_status);
-static void freeCardStatus(RIL_CardStatus *p_card_status);
+static int getCardStatus(RIL_CardStatus_v5 **pp_card_status);
+static void freeCardStatus(RIL_CardStatus_v5 *p_card_status);
 static void onDataCallListChanged(void *param);
 static int killConn(char * cid);
 
@@ -115,7 +114,7 @@ extern const char * requestToString(int request);
 
 /*** Static Variables ***/
 static const RIL_RadioFunctions s_callbacks = {
-	RIL_VERSION,
+	4,
 	onRequest,
 	currentState,
 	onSupports,
@@ -219,7 +218,7 @@ static void handle_cdma_ccwa (const char *s)
 	char *line, *tmp;
 
 	line = tmp = strdup(s);
-	RIL_CDMA_CallWaiting resp;
+	RIL_CDMA_CallWaiting_v5 resp;
 	err = at_tok_start(&tmp);
 	if (err)
 		goto out;
@@ -582,7 +581,7 @@ static void requestOrSendDataCallList(RIL_Token *t)
 {
 	ATResponse *p_response;
 	ATLine *p_cur;
-	RIL_Data_Call_Response *responses;
+	RIL_Data_Call_Response_v4 *responses;
 	int err;
 	char status[1];
 	int n = 0;
@@ -603,7 +602,7 @@ static void requestOrSendDataCallList(RIL_Token *t)
 				p_cur = p_cur->p_next)
 			n++;
 
-		responses = alloca(n * sizeof(RIL_Data_Call_Response));
+		responses = alloca(n * sizeof(RIL_Data_Call_Response_v4));
 
 		int i;
 		for (i = 0; i < n; i++) {
@@ -614,7 +613,7 @@ static void requestOrSendDataCallList(RIL_Token *t)
 			responses[i].address = "";
 		}
 
-		RIL_Data_Call_Response *response = responses;
+		RIL_Data_Call_Response_v4 *response = responses;
 		for (p_cur = p_response->p_intermediates; p_cur != NULL;
 				p_cur = p_cur->p_next) {
 			char *line = p_cur->line;
@@ -700,7 +699,7 @@ static void requestOrSendDataCallList(RIL_Token *t)
 	} else {
 		//CDMA
 		n = 1;
-		responses = alloca(sizeof(RIL_Data_Call_Response));
+		responses = alloca(sizeof(RIL_Data_Call_Response_v4));
 
 		responses[0].cid = 1;
 		if (dataCallNum() >= 0)
@@ -720,11 +719,11 @@ static void requestOrSendDataCallList(RIL_Token *t)
 
 	if (t != NULL)
 		RIL_onRequestComplete(*t, RIL_E_SUCCESS, responses,
-				n * sizeof(RIL_Data_Call_Response));
+				n * sizeof(RIL_Data_Call_Response_v4));
 	else
 		RIL_onUnsolicitedResponse(RIL_UNSOL_DATA_CALL_LIST_CHANGED,
 				responses,
-				n * sizeof(RIL_Data_Call_Response));
+				n * sizeof(RIL_Data_Call_Response_v4));
 
 	return;
 
@@ -1343,7 +1342,7 @@ static void requestHangup(void *data, size_t datalen, RIL_Token t)
 	RIL_onRequestComplete(t, RIL_E_SUCCESS, NULL, 0);
 }
 
-static void resp2Strength(int *response, RIL_SignalStrength *rs)
+static void resp2Strength(int *response, RIL_SignalStrength_v5 *rs)
 {
 	const int dbm_table[8] = {135,125,115,105,95,85,75,70};
 	const int edbm_table[8] = {120,110,100,90,80,75,70,65};
@@ -1367,7 +1366,7 @@ static void requestSignalStrength(void *data, size_t datalen, RIL_Token t)
 	ATResponse *p_response = NULL;
 	int err;
 	int response[2];
-	RIL_SignalStrength rs = {{99,99},{-1,-1},{-1,-1,-1}};
+	RIL_SignalStrength_v5 rs = {{99,99},{-1,-1},{-1,-1,-1}};
 	char *line;
 
 	/* If we have no recent report, ask */
@@ -1689,10 +1688,10 @@ static void requestRegistrationState(int request, void *data,
 	got_state_change = 0;
 
 	if(phone_is == MODE_GSM) {
-		if (request == RIL_REQUEST_REGISTRATION_STATE) {
+		if (request == RIL_REQUEST_VOICE_REGISTRATION_STATE) {
 			cmd = "AT+CREG?";
 			prefix = "+CREG:";
-		} else if (request == RIL_REQUEST_GPRS_REGISTRATION_STATE) {
+		} else if (request == RIL_REQUEST_DATA_REGISTRATION_STATE) {
 			cmd = "AT+CGREG?";
 			prefix = "+CGREG:";
 		} else {
@@ -1728,7 +1727,7 @@ static void requestRegistrationState(int request, void *data,
 
 	if (err != 0 || !p_response->success) {
 		/* CGREG will return CREG if we're not in GSM */
-		if (err != 0 && request == RIL_REQUEST_GPRS_REGISTRATION_STATE &&
+		if (err != 0 && request == RIL_REQUEST_DATA_REGISTRATION_STATE &&
 			(phone_has & MODE_CDMA)) {
 			phone_is = MODE_CDMA;
 			setPhoneMode();
@@ -1910,7 +1909,7 @@ static void requestRegistrationState(int request, void *data,
 		else if (radiotype == -1)	/* unknown */
 			radiotype = RADIO_UNKNOWN;
 
-		if (request != RIL_REQUEST_GPRS_REGISTRATION_STATE) {
+		if (request != RIL_REQUEST_DATA_REGISTRATION_STATE) {
 			count = 14;
 			for (i=4; i<14; i++)
 				responseStr[i] = NULL;
@@ -2244,7 +2243,7 @@ static void requestSetupDataCall(char **data, size_t datalen, RIL_Token t)
 	char *user = NULL;
 	char *pass = NULL;
 	char *cmd;
-	char *userpass;
+	char *pppd_args;
 	int err;
 	ATResponse *p_response = NULL;
 	int fd, i;
@@ -2313,6 +2312,7 @@ static void requestSetupDataCall(char **data, size_t datalen, RIL_Token t)
 			goto error;
 		}
 		at_response_free(p_response);
+		asprintf(&pppd_args,"%s user %s password %s", smd7, user, pass);
 	} else {
 		//CDMA
 		pthread_mutex_lock(&s_data_mutex);
@@ -2326,12 +2326,14 @@ static void requestSetupDataCall(char **data, size_t datalen, RIL_Token t)
 			goto error;
 		}
 		at_response_free(p_response);
+		asprintf(&pppd_args,"/dev/smd7 user %s password %s", user, pass);
 	}
 
-	asprintf(&userpass, PPP_SERVICE ":%s user %s password %s", smd7, user, pass);
 	property_set("net.gprs.local-ip", "0.0.0.0");
-	property_set("ctl.start", userpass);
-	free(userpass);
+	property_set("net.ppp0.local-ip", "0.0.0.0");
+	property_set("ril.pppd_runner.args", pppd_args);
+	property_set("ril.pppd_runner.data_ready", "true");
+	free(pppd_args);
 
 	for (i=0; i<25; i++) {
 		int ok;
@@ -2363,7 +2365,9 @@ static void requestSetupDataCall(char **data, size_t datalen, RIL_Token t)
 		PPP_KILL();
 		goto error;
 	}
+
 	RIL_onRequestComplete(t, RIL_E_SUCCESS, response, sizeof(response));
+
 	return;
 
 error:
@@ -2472,12 +2476,12 @@ static void  requestSIM_IO(void *data, size_t datalen, RIL_Token t)
 	RIL_SIM_IO_Response sr;
 	int err;
 	char *cmd = NULL;
-	RIL_SIM_IO *p_args;
+	RIL_SIM_IO_v5 *p_args;
 	char *line;
 
 	memset(&sr, 0, sizeof(sr));
 
-	p_args = (RIL_SIM_IO *)data;
+	p_args = (RIL_SIM_IO_v5 *)data;
 	if(slow_sim)
 		usleep(slow_sim);
 
@@ -2644,7 +2648,7 @@ static void unsolicitedRSSI(const char * s)
 	int response[2];
 	const unsigned char asu_table[6]={0,3,5,8,12,19};
 	char * line = NULL, *origline;
-	RIL_SignalStrength rs = {{99,99},{-1,-1},{-1,-1,-1}};
+	RIL_SignalStrength_v5 rs = {{99,99},{-1,-1},{-1,-1,-1}};
 
 	origline = strdup(s);
 	line = origline;
@@ -3341,11 +3345,11 @@ static void requestLastDataFailCause(RIL_Token t)
 	case CME_PHONE_NO_CONNECTION:
 	case CME_NO_NETWORK_SERVICE:
 	case CME_NETWORK_TIMEOUT:
-		response = PDP_FAIL_REGISTRATION_FAIL; break;
+		response = PDP_FAIL_VOICE_REGISTRATION_FAIL; break;
 	case CME_MEMORY_FAILURE:
 		response = PDP_FAIL_INSUFFICIENT_RESOURCES; break;
 	case CME_INVALID_MOBILE_CLASS:
-		response = PDP_FAIL_GPRS_REGISTRATION_FAIL; break;
+		response = PDP_FAIL_DATA_REGISTRATION_FAIL; break;
 	default:
 		response = PDP_FAIL_ERROR_UNSPECIFIED; break;
 	}
@@ -4422,7 +4426,7 @@ onRequest (int request, void *data, size_t datalen, RIL_Token t)
 ok:
 	switch (request) {
 		case RIL_REQUEST_GET_SIM_STATUS: {
-			RIL_CardStatus *p_card_status;
+			RIL_CardStatus_v5 *p_card_status;
 			char *p_buffer;
 			int buffer_size;
 			
@@ -4483,8 +4487,8 @@ ok:
 			requestSignalStrength(data, datalen, t);
 			break;
 
-		case RIL_REQUEST_REGISTRATION_STATE:
-		case RIL_REQUEST_GPRS_REGISTRATION_STATE:
+		case RIL_REQUEST_VOICE_REGISTRATION_STATE:
+		case RIL_REQUEST_DATA_REGISTRATION_STATE:
 			requestRegistrationState(request, data, datalen, t);
 			break;
 
@@ -4717,7 +4721,7 @@ ok:
 			requestNeighboringCellIds(data, datalen, t);
 			break;
 
-		case RIL_REQUEST_CDMA_SET_SUBSCRIPTION:
+		case RIL_REQUEST_CDMA_SET_SUBSCRIPTION_SOURCE:
 			requestCdmaSetSubscription(data, datalen, t);
 			break;
 
@@ -4978,7 +4982,7 @@ done:
  * This must be freed using freeCardStatus.
  * @return: On success returns RIL_E_SUCCESS
  */
-static int getCardStatus(RIL_CardStatus **pp_card_status) {
+static int getCardStatus(RIL_CardStatus_v5 **pp_card_status) {
     static RIL_AppStatus app_status_array[] = {
         // SIM_ABSENT = 0
         { RIL_APPTYPE_UNKNOWN, RIL_APPSTATE_UNKNOWN, RIL_PERSOSUBSTATE_UNKNOWN,
@@ -5012,7 +5016,7 @@ static int getCardStatus(RIL_CardStatus **pp_card_status) {
     }
 
     // Allocate and initialize base card status.
-    RIL_CardStatus *p_card_status = malloc(sizeof(RIL_CardStatus));
+    RIL_CardStatus_v5 *p_card_status = malloc(sizeof(RIL_CardStatus_v5));
     p_card_status->card_state = card_state;
     p_card_status->universal_pin_state = RIL_PINSTATE_UNKNOWN;
     p_card_status->gsm_umts_subscription_app_index = RIL_CARD_MAX_APPS;
@@ -5043,7 +5047,7 @@ static int getCardStatus(RIL_CardStatus **pp_card_status) {
 /**
  * Free the card status returned by getCardStatus
  */
-static void freeCardStatus(RIL_CardStatus *p_card_status) {
+static void freeCardStatus(RIL_CardStatus_v5 *p_card_status) {
 	free(p_card_status);
 }
 
@@ -5388,7 +5392,7 @@ static void onUnsolicited (const char *s, const char *sms_pdu)
 			if (s[0] == '+')
 				unsolicitedCREG(s);
 			RIL_onUnsolicitedResponse (
-				RIL_UNSOL_RESPONSE_NETWORK_STATE_CHANGED,
+				RIL_UNSOL_RESPONSE_VOICE_NETWORK_STATE_CHANGED,
 				NULL, 0);
 		}
 /*		RIL_requestTimedCallback (onDataCallListChanged, NULL, NULL); */
