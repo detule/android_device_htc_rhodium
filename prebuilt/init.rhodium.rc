@@ -118,7 +118,8 @@ on fs
     chown system system /sys/class/leds/lcd-backlight/auto
 
 # Enable low memory killer to check file pages
-    write /sys/module/lowmemorykiller/parameters/minfile 0,0,0,0,5632,6144
+    write /sys/module/lowmemorykiller/parameters/minfree 0,0,1536,3072,5120
+    write /sys/module/lowmemorykiller/parameters/adj 0,2,4,7,12
     write /sys/module/lowmemorykiller/parameters/check_filepages 1
 
 on post-fs-data 
