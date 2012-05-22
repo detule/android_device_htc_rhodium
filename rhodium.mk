@@ -38,6 +38,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 PRODUCT_COPY_FILES += \
     device/htc/rhodium/prebuilt/init.rhodium.rc:root/init.rhodium.rc \
+    device/htc/rhodium/prebuilt/pppd_runner:system/bin/pppd_runner \
     device/htc/rhodium/prebuilt/ueventd.rhodium.rc:root/ueventd.rhodium.rc
 
 # Permissions for HeroC
