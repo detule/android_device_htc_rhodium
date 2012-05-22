@@ -31,8 +31,6 @@ unzip -j -o ../../../${DEVICE}_update.zip -d ../../../vendor/htc/$DEVICE/proprie
 	system/lib/libaudioeq.so \
 	system/lib/libcamera.so \
 	system/lib/libgps.so \
-	system/lib/libhtc_acoustic.so \
-	system/lib/libhtc_ril.so \
 	system/lib/libmm-adspsvc.so \
 	system/lib/liboemcamera.so \
 	system/lib/libOmxCore.so \
