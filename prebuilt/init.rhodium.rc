@@ -157,9 +157,7 @@ service iprenew_tiwlan0 /system/bin/dhcpcd -n
     disabled
     oneshot
 
-service hciattach /system/bin/hciattach \
-    -n -s 115200 /dev/ttyHS0 texasalt 4000000 flow
-    class main
+service hciattach /system/bin/hciattach
     user bluetooth
     group bluetooth net_bt_admin
     disabled
@@ -170,3 +168,13 @@ service bugreport /system/bin/dumpstate -d -v -z -o /sdcard/bugreports/bugreport
     disabled
     oneshot
     keycodes 158 139
+
+service pppd_gprs /system/bin/pppd_runner
+    disabled
+    oneshot
+
+on property:ril.pppd_runner.data_ready=true
+    start pppd_gprs
+
+on property:ril.pppd_runner.data_ready=false
+    stop pppd_gprs
