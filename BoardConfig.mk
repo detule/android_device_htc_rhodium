@@ -104,17 +104,17 @@ BUILD_WITH_FULL_STAGEFRIGHT := true
 TARGET_RELEASETOOLS_EXTENSIONS := device/htc/common
 
 # # cat /proc/mtd
-# dev:    size   erasesize  name
-# mtd0: 00040000 00020000 "misc"
-# mtd1: 00500000 00020000 "recovery"
-# mtd2: 00280000 00020000 "boot"
-# mtd3: 05a00000 00020000 "system"
-# mtd4: 05000000 00020000 "cache"
-# mtd5: 127c0000 00020000 "userdata"
-BOARD_BOOTIMAGE_PARTITION_SIZE := 0x00280000
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 0x00500000
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 0x0aa00000
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 0x0a5c0000
+# nand tag: n=0 name=recovery offset=0x4000000 size=0x5c0000 flags=0x0
+# nand tag: n=1 name=misc offset=0x45c0000 size=0x100000 flags=0x0
+# nand tag: n=2 name=boot offset=0x46c0000 size=0x400000 flags=0x0
+# nand tag: n=3 name=system offset=0x4ac0000 size=0xc000000 flags=0x0
+# nand tag: n=4 name=userdata offset=0x10ac0000 size=0xe4e0000 flags=0x0
+# nand tag: n=5 name=cache offset=0x1efa0000 size=0x1060000 flags=0x0
+
+BOARD_BOOTIMAGE_PARTITION_SIZE := 0x400000
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 0x5c0000
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 0xc000000
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 0xe4e0000
 
 # The size of a block that can be marked bad.
 BOARD_FLASH_BLOCK_SIZE := 131072
