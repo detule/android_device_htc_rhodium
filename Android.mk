@@ -20,10 +20,10 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_PATH := $(my-dir)
 subdir_makefiles := \
 	$(LOCAL_PATH)/liblights/Android.mk \
-	$(LOCAL_PATH)/libsensors/Android.mk \
         $(LOCAL_PATH)/libaudio_wince/Android.mk \
         $(LOCAL_PATH)/libacoustic/Android.mk \
         $(LOCAL_PATH)/xdandroid-ril/Android.mk \
+	$(LOCAL_PATH)/xdandroid-libsensors/Android.mk \
 	$(LOCAL_PATH)/libgralloc/Android.mk \
 	$(LOCAL_PATH)/librpc/Android.mk \
 	$(LOCAL_PATH)/libstagefrighthw/Android.mk \
